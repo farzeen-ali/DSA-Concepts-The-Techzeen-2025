@@ -32,6 +32,13 @@ public class BinarySearchTree {
         }
         return root;
     }
+    void inorder(Node root){
+        if(root == null) return;
+
+        inorder(root.left);
+        System.out.println(root.data + " ");
+        inorder(root.right);
+    }
     public static void main(String[] args) {
         BinarySearchTree bst = new BinarySearchTree();
 
@@ -42,5 +49,7 @@ public class BinarySearchTree {
         bst.insert(40);
         bst.insert(60);
         bst.insert(80);
+
+        bst.inorder(bst.root);
     }
 }
