@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class BinarySearchTree {
     static class Node{
         int data;
@@ -39,6 +41,25 @@ public class BinarySearchTree {
         System.out.println(root.data + " ");
         inorder(root.right);
     }
+
+    boolean search(Node root, int key){
+//        base condition
+        if(root == null){
+            return false;
+        }
+//        found the key
+        if(root.data == key){
+            return true;
+        }
+//        recursive search
+        if(key < root.data){
+            return search(root.left, key);
+        }
+        else {
+            return search(root.right, key);
+        }
+    }
+
     public static void main(String[] args) {
         BinarySearchTree bst = new BinarySearchTree();
 
@@ -51,5 +72,19 @@ public class BinarySearchTree {
         bst.insert(80);
 
         bst.inorder(bst.root);
+
+        int keyValue;
+        System.out.print("Enter a number you want to search: ");
+        Scanner sc = new Scanner(System.in);
+        keyValue = sc.nextInt();
+        System.out.println("\nSearching for " + keyValue + "......");
+        if(bst.search(bst.root, keyValue)){
+            System.out.println("Node " + keyValue + " found in the BST");
+        }
+        else {
+            System.out.println("Node " + keyValue + " not found in the BST");
+        }
     }
+
 }
+
