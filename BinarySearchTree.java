@@ -60,6 +60,48 @@ public class BinarySearchTree {
         }
     }
 
+    Node delete(Node root, int key){
+//        Base case
+        if(root == null){
+            System.out.println("Value: " + key + " not found!");
+            return root;
+        }
+
+        if(key < root.data){
+            root.left = delete(root.left, key);
+        } else if (key > root.data) {
+            root.right = delete(root.right, key);
+        }
+        else {
+//            Node has no child
+            if(root.left == null && root.right == null){
+                System.out.println("Deleting leaf node: " + key);
+                return null;
+            }
+//            Node has one child
+            else if (root.left == null){
+                System.out.println("Deleting node with one child: " + key);
+                return root.right;
+            }else if (root.right == null){
+                System.out.println("Deleting node with one child: " + key);
+                return root.left;
+            }
+//            Node has two children
+            System.out.println("Deleting node with two children: " + key);
+            Node minNode = findMin(root.right); // find inorder successor
+            root.data = minNode.data; // copy value
+            root.right = delete(root.right, minNode.data); // recursive delete
+        }
+        return root;
+    }
+
+    Node findMin(Node root){
+        while(root.left != null){
+            root = root.left;
+        }
+        return root;
+    }
+
     public static void main(String[] args) {
         BinarySearchTree bst = new BinarySearchTree();
 
@@ -73,17 +115,29 @@ public class BinarySearchTree {
 
         bst.inorder(bst.root);
 
-        int keyValue;
-        System.out.print("Enter a number you want to search: ");
-        Scanner sc = new Scanner(System.in);
-        keyValue = sc.nextInt();
-        System.out.println("\nSearching for " + keyValue + "......");
-        if(bst.search(bst.root, keyValue)){
-            System.out.println("Node " + keyValue + " found in the BST");
-        }
-        else {
-            System.out.println("Node " + keyValue + " not found in the BST");
-        }
+//        int keyValue;
+//        System.out.print("Enter a number you want to search: ");
+//        Scanner sc = new Scanner(System.in);
+//        keyValue = sc.nextInt();
+//        System.out.println("\nSearching for " + keyValue + "......");
+//        if(bst.search(bst.root, keyValue)){
+//            System.out.println("Node " + keyValue + " found in the BST");
+//        }
+//        else {
+//            System.out.println("Node " + keyValue + " not found in the BST");
+//        }
+        System.out.println("Deleting 20: ");
+        bst.root = bst.delete(bst.root, 20);
+
+        System.out.println("Deleting 30: ");
+        bst.root = bst.delete(bst.root, 30);
+
+        System.out.println("Deleting 50: ");
+        bst.root = bst.delete(bst.root, 50);
+
+        System.out.println("Inorder Traversing After Deletion: ");
+        bst.inorder(bst.root);
+        System.out.println();
     }
 
 }
