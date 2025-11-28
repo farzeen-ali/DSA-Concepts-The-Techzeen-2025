@@ -1,14 +1,14 @@
 public class AVLTree {
-    static class Node{
+    static class Node {
         int key;
         Node left, right;
         int height;
 
-        Node(int key){
+        Node(int key) {
             this.key = key;
             this.height = 1; // 1 + max((lc),(rc))
         }
-
+    }
         private Node root;
 
         private int height(Node node){
@@ -44,6 +44,60 @@ public class AVLTree {
 
             return rightNode;
         }
+//        insertion operation
+        public void insert(int key){
+            root = insertRec(root, key);
+            System.out.println("Inserted: " + key);
+        }
+//        actual insertion login
+        private Node insertRec(Node node, int key){
+            if(node == null){
+                return new Node(key);
+            }
+            if(key < node.key){
+                node.left = insertRec(node.left, key);
+            }
+            else if(key > node.key){
+                node.right = insertRec(node.right, key);
+            }
+            else {
+                return node;
+            }
 
+//            update height
+            node.height = 1 + Math.max(height(node.left), height(node.right));
+
+            int balance = getBalance(node);
+// -1, 0, 1
+//          LL
+            if(balance > 1 && key < node.left.key){
+                return rotateRight(node);
+            }
+            // RR
+            if (balance < -1 && key > node.right.key){
+                return rotateLeft(node);
+            }
+//            LR
+            if(balance > 1 && key > node.right.key){
+                node.left = rotateLeft(node.left);
+                return rotateRight(node);
+            }
+            // RR
+            if (balance < -1 && key < node.left.key){
+                node.right = rotateRight(node.right);
+                return rotateLeft(node);
+            }
+            return node;
+        }
+
+    public static void main(String[] args) {
+        AVLTree avl = new AVLTree();
+
+        avl.insert(30);
+        avl.insert(20);
+        avl.insert(40);
+        avl.insert(10);
+        avl.insert(25);
+        avl.insert(50);
     }
 }
