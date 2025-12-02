@@ -90,6 +90,20 @@ public class AVLTree {
             return node;
         }
 
+//        Inorder => Sorted Output
+        public void inorder(){
+            inorderRec(root);
+            System.out.println();
+        }
+
+        private void inorderRec(Node node){
+            if(node != null){
+                inorderRec(node.left);
+                System.out.println(node.key + " ");
+                inorderRec(node.right);
+            }
+        }
+
     public static void main(String[] args) {
         AVLTree avl = new AVLTree();
 
@@ -99,5 +113,8 @@ public class AVLTree {
         avl.insert(10);
         avl.insert(25);
         avl.insert(50);
+
+        System.out.println("\nInorder Traversal: ");
+        avl.inorder();
     }
 }
