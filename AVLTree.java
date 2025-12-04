@@ -104,6 +104,25 @@ public class AVLTree {
             }
         }
 
+//        public search
+    public boolean search(int key){
+            return searchRec(root, key);
+    }
+
+    private boolean searchRec(Node node, int key){
+            if(node == null){
+                return false;
+            }
+            if(key == node.key){
+                return true;
+            }
+            return (key < node.key)
+                    ?
+                    searchRec(node.left, key)
+                    : searchRec(node.right, key);
+
+    }
+
     public static void main(String[] args) {
         AVLTree avl = new AVLTree();
 
@@ -116,5 +135,8 @@ public class AVLTree {
 
         System.out.println("\nInorder Traversal: ");
         avl.inorder();
+
+        System.out.println("Search 25: " + avl.search(25));
+        System.out.println("Search 100: " + avl.search(100));
     }
 }
