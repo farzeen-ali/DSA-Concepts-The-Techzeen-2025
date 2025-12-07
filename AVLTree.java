@@ -82,7 +82,7 @@ public class AVLTree {
                 node.left = rotateLeft(node.left);
                 return rotateRight(node);
             }
-            // RR
+            // RL
             if (balance < -1 && key < node.left.key){
                 node.right = rotateRight(node.right);
                 return rotateLeft(node);
@@ -123,6 +123,65 @@ public class AVLTree {
 
     }
 
+//    find min value in right subtree
+    private Node minValueNode(Node node){
+            Node current = node;
+            while(current.left != null){
+                current = current.left;
+            }
+            return current;
+    }
+
+//    public delete
+    public void delete(int key){
+            root = deleteRec(root, key);
+        System.out.println("Requested Delete: " + key);
+    }
+
+//    delete recursive
+    private Node deleteRec(Node node, int key){
+            if(node == null)
+                return null;
+            if(key < node.key)
+                node.left = deleteRec(node.left, key);
+            else if(key > node.key)
+                node.right = deleteRec(node.right, key);
+            else {
+//                1-child or 0 child
+                if(node.left == null || node.right == null){
+                    return (node.left != null) ? node.left : node.right;
+                }
+//                2-child -> inorder successor
+                Node successor = minValueNode(node.right);
+                node.key = successor.key;
+                node.right = deleteRec(node.right, successor.key);
+            }
+//            height update
+        node.height = Math.max(height(node.left), height(node.right)) + 1;
+
+            int balance = getBalance(node);
+
+//            LL
+        if(balance > 1 && getBalance(node.left) >=0){
+            return rotateRight(node);
+        }
+//        LR
+        if(balance > 1 && getBalance(node.left) < 0){
+            node.left = rotateLeft(node.left);
+            return rotateRight(node);
+        }
+        //            RR
+        if(balance < -1 && getBalance(node.right) <=0){
+            return rotateLeft(node);
+        }
+//        RL
+        if(balance < -1 && getBalance(node.right) > 0){
+            node.right = rotateRight(node.right);
+            return rotateLeft(node);
+        }
+        return node;
+    }
+
     public static void main(String[] args) {
         AVLTree avl = new AVLTree();
 
@@ -138,5 +197,9 @@ public class AVLTree {
 
         System.out.println("Search 25: " + avl.search(25));
         System.out.println("Search 100: " + avl.search(100));
+
+        avl.delete(20);
+        System.out.println("\nInorder After Deletion: ");
+        avl.inorder();
     }
 }
